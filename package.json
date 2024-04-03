@@ -30,14 +30,14 @@
     "url": "https://webpro.nl"
   },
   "dependencies": {
-    "detect-newline": "^4.0.0",
+    "detect-newline": "^4.0.1",
     "string-template": "^1.0.0"
   },
   "devDependencies": {
     "bron": "^2.0.3",
-    "mock-fs": "^5.1.4",
-    "release-it": "^16.1.3",
-    "sinon": "^15.2.0"
+    "mock-fs": "^5.2.0",
+    "release-it": "^17.1.1",
+    "sinon": "^17.0.1"
   },
   "peerDependencies": {
     "release-it": "^16.1.3"
