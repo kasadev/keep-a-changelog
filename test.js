@@ -41,7 +41,7 @@ const namespace = 'keep-a-changelog';
 test('should throw for missing changelog file', async t => {
   const options = { [namespace]: {} };
   const plugin = factory(Plugin, { namespace, options });
-  await assert.rejects(runTasks(plugin), /ENOENT: no such file or directory/);
+  await assert.rejects(runTasks(plugin), /ENOENT, no such file or directory/);
 });
 
 test('should throw for missing "unreleased" section', async t => {

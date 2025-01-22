@@ -35,15 +35,15 @@
   },
   "devDependencies": {
     "bron": "^2.0.3",
-    "mock-fs": "^5.2.0",
-    "release-it": "^17.1.1",
-    "sinon": "^17.0.1"
+    "mock-fs": "^5.4.1",
+    "release-it": "^18.1.1",
+    "sinon": "^19.0.2"
   },
   "peerDependencies": {
-    "release-it": "^17.1.1"
+    "release-it": "^18.1.1"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "release-it": {
     "github": {
