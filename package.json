@@ -1,6 +1,6 @@
 {
   "name": "@kasadev/keep-a-changelog",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "description": "Keep-a-changelog plugin for release-it",
   "type": "module",
   "exports": "./index.js",
@@ -36,14 +36,14 @@
   "devDependencies": {
     "bron": "^2.0.3",
     "mock-fs": "^5.5.0",
-    "release-it": "^19.0.1",
+    "release-it": "^20.0.1",
     "sinon": "^20.0.0"
   },
   "peerDependencies": {
-    "release-it": "^19.0.1"
+    "release-it": "^20.0.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "release-it": {
     "github": {
