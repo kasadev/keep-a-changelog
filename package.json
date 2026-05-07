@@ -43,7 +43,7 @@
     "release-it": "^20.0.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "release-it": {
     "github": {
