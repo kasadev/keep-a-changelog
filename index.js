@@ -81,7 +81,11 @@ class KeepAChangelog extends Plugin {
     const { filename, strictLatest } = this;
     const previousReleaseTitle = strictLatest ? `## [${latestVersion}]` : `## [`;
     const hasPreviousReleaseSection = this.changelogContent.includes(previousReleaseTitle);
-    if (strictLatest && !hasPreviousReleaseSection) {
+    // kasa-added start
+    // release-it falls back to 0.0.0 when nothing has been released yet, so there is no previous section to find
+    const isFirstRelease = latestVersion === '0.0.0';
+    // kasa-added end
+    if (strictLatest && !isFirstRelease && !hasPreviousReleaseSection) {
       throw Error(`Missing section for previous release ("${latestVersion}") in ${filename}.`);
     }
 
