@@ -31,7 +31,10 @@ mock({
     '\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n\n## [1.0.0] - 2020-05-02\n\n* Item C\n* Item D\n\n[unreleased]: https://github.com/user/project/compare/1.0.0..HEAD\n[1.0.0]: https://github.com/user/project/compare/0.0.0...1.0.0',
   './CHANGELOG-VERSION_URL_UNRELEASED_TITLE_CASE.md':
     '\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n\n## [1.0.0] - 2020-05-02\n\n* Item C\n* Item D\n\n[Unreleased]: https://github.com/user/project/compare/1.0.0..HEAD\n[1.0.0]: https://github.com/user/project/compare/0.0.0...1.0.0',
-  './CHANGELOG-VERSION_URL_NEW.md': '\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n'
+  './CHANGELOG-VERSION_URL_NEW.md': '\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n',
+  './CHANGELOG-FIRST_RELEASE.md': '# Changelog\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n',
+  './CHANGELOG-FIRST_RELEASE_ANCHOR.md': '# Changelog\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n\n## [0.0.0]\n',
+  './CHANGELOG-LATER_RELEASE.md': '# Changelog\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n'
 });
 
 const readFile = file => fs.readFileSync(file).toString();
@@ -86,6 +89,41 @@ test('should throw for missing section for previous release', async t => {
   const options = { [namespace]: { filename: 'CHANGELOG-MISSING.md' } };
   const plugin = await factory(Plugin, { namespace, options });
   await assert.rejects(runTasks(plugin), /Missing section for previous release \("1\.0\.0"\) in CHANGELOG-MISSING\.md/);
+});
+
+test('should write first release without a "0.0.0" section', async t => {
+  const options = { [namespace]: { filename: 'CHANGELOG-FIRST_RELEASE.md' } };
+  const plugin = await factory(Plugin, { namespace, options });
+  sinon.stub(plugin, 'getLatestVersion').returns('0.0.0');
+  await runTasks(plugin);
+  assert.equal(plugin.getChangelog(), '* Item A\n* Item B');
+  assert.match(
+    readFile('./CHANGELOG-FIRST_RELEASE.md'),
+    /^# Changelog\n\n## \[0\.1\.0] - [0-9]{4}-[0-9]{2}-[0-9]{2}\n\n\* Item A\n\* Item B\n$/
+  );
+});
+
+test('should write first release with an empty "0.0.0" section', async t => {
+  const options = { [namespace]: { filename: 'CHANGELOG-FIRST_RELEASE_ANCHOR.md' } };
+  const plugin = await factory(Plugin, { namespace, options });
+  sinon.stub(plugin, 'getLatestVersion').returns('0.0.0');
+  await runTasks(plugin);
+  assert.equal(plugin.getChangelog(), '* Item A\n* Item B');
+  assert.match(
+    readFile('./CHANGELOG-FIRST_RELEASE_ANCHOR.md'),
+    /^# Changelog\n\n## \[0\.1\.0] - [0-9]{4}-[0-9]{2}-[0-9]{2}\n\n\* Item A\n\* Item B\n\n## \[0\.0\.0]\n$/
+  );
+});
+
+test('should throw for missing previous section on a later release', async t => {
+  const options = { [namespace]: { filename: 'CHANGELOG-LATER_RELEASE.md' } };
+  const plugin = await factory(Plugin, { namespace, options });
+  sinon.stub(plugin, 'getLatestVersion').returns('0.1.0');
+  await assert.rejects(
+    runTasks(plugin),
+    /Missing section for previous release \("0\.1\.0"\) in CHANGELOG-LATER_RELEASE\.md/
+  );
+  assert.equal(readFile('./CHANGELOG-LATER_RELEASE.md'), '# Changelog\n\n## [Unreleased-minor]\n\n* Item A\n* Item B\n');
 });
 
 test('should find very first changelog with disabled strict latest option', async t => {
